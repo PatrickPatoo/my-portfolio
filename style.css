@@ -115,7 +115,54 @@ header {
   font-size: 30px;
   color: #555;
   margin-bottom: 20px;
+  min-height: 45px;
 }
+
+.typewrite {
+  color: #555;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.typewrite .wrap {
+  border-right: 3px solid #2563eb;
+  padding-right: 5px;
+  animation: blinkCursor 0.7s infinite;
+}
+
+@keyframes blinkCursor {
+  0%,
+  50% {
+    border-color: #2563eb;
+  }
+
+  51%,
+  100% {
+    border-color: transparent;
+  }
+}
+
+/* Dark mode */
+body.dark-mode .typewrite {
+  color: #cbd5e1;
+}
+
+body.dark-mode .typewrite .wrap {
+  border-right-color: #60a5fa;
+}
+
+@keyframes blinkCursorDark {
+  0%,
+  50% {
+    border-color: #60a5fa;
+  }
+
+  51%,
+  100% {
+    border-color: transparent;
+  }
+}
+
 .hero-description {
   font-size: 18px;
   color: #555;
