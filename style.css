@@ -772,6 +772,7 @@ header {
 /* ============================================
    CONTACT
    ============================================ */
+
 .contact {
   background: var(--snow);
 }
@@ -844,6 +845,10 @@ header {
   border-top: 1px solid var(--border);
 }
 
+/* ============================================
+   CONTACT FORM - ORIGINAL STYLING
+   ============================================ */
+
 .contact-form {
   background: var(--card);
   padding: 36px;
@@ -886,16 +891,62 @@ header {
   padding: 15px;
 }
 
+/* ============================================
+   CONTACT FORM - SENDING ANIMATION
+   NEW: Added for the Sending... state
+   ============================================ */
+
+.contact-form button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.contact-form button .fa-spinner {
+  animation: contactSpin 1s linear infinite;
+}
+
+@keyframes contactSpin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   CONTACT FORM - SUCCESS AND ERROR MESSAGES
+   NEW: Added for submission feedback
+   ============================================ */
+
 #formMessage {
   margin-top: 16px;
   text-align: center;
   font-size: 14px;
   min-height: 22px;
+  line-height: 1.6;
+}
+
+.form-message {
+  font-weight: 600;
+}
+
+/* NEW: Successful submission message */
+.form-message.success {
+  color: #1d7a4d;
+}
+
+/* NEW: Failed submission message */
+.form-message.error {
+  color: #d62828;
 }
 
 /* ============================================
    FOOTER
    ============================================ */
+
 footer {
   background: var(--forest-dark);
   color: var(--cream);
@@ -938,6 +989,7 @@ footer::before {
 /* ============================================
    REVEAL ANIMATION
    ============================================ */
+
 .reveal {
   opacity: 0;
   transform: translateY(36px);
@@ -949,21 +1001,6 @@ footer::before {
 .reveal.active {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* ============================================
-   FORM MESSAGE STATES
-   ============================================ */
-.form-message {
-  margin-top: 15px;
-  font-weight: 600;
-  min-height: 24px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.form-message.success {
-  color: #1d7a4d;
 }
 
 /* ============================================
