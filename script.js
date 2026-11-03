@@ -146,7 +146,7 @@ if (contactForm) {
     } catch (error) {
       // ERROR MESSAGE
       formMessage.textContent =
-        "Sorry! Your message could not be sent. Please check your internet connection and try again.";
+        "Sorry! Your message could not be sent. Please check your internet connection and try again or send me an email directly via the email provided.";
 
       formMessage.className = "form-message error";
 
