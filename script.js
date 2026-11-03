@@ -57,6 +57,7 @@ reveal();
 
 /* ============================================
    CONTACT FORM - EMAIL SUBMISSION
+   Uses FormSubmit AJAX to send messages
 ============================================ */
 
 const contactForm = document.getElementById("contactForm");
@@ -69,6 +70,12 @@ if (contactForm) {
     // Prevent normal page reload
     e.preventDefault();
 
+    // Check that required elements exist
+    if (!submitBtn || !formMessage) {
+      console.error("Contact form elements are missing.");
+      return;
+    }
+
     // Prevent multiple submissions
     if (submitBtn.disabled) return;
 
@@ -76,7 +83,8 @@ if (contactForm) {
     const originalButtonContent = submitBtn.innerHTML;
 
     // Get visitor name
-    const name = contactForm.querySelector('[name="name"]').value.trim();
+    const nameInput = contactForm.querySelector('[name="name"]');
+    const name = nameInput ? nameInput.value.trim() : "there";
 
     // Clear previous messages
     formMessage.textContent = "";
@@ -91,30 +99,35 @@ if (contactForm) {
     `;
 
     try {
-      // Send form data to FormSubmit
-      const response = await fetch(contactForm.action, {
-        method: "POST",
-        body: new FormData(contactForm),
-        headers: {
-          Accept: "application/json",
+      // Collect all form fields
+      const formData = new FormData(contactForm);
+      const data = Object.fromEntries(formData.entries());
+
+      // Send form data using FormSubmit AJAX endpoint
+      const response = await fetch(
+        "https://formsubmit.co/ajax/patrickkiptoo199@gmail.com",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify(data),
         },
-      });
+      );
 
-      // Check server response
-      if (!response.ok) {
-        throw new Error("Message submission failed.");
-      }
-
+      // Read server response
       const result = await response.json();
 
-      if (result.success === false || result.success === "false") {
+      // Check whether submission was successful
+      if (!response.ok || String(result.success).toLowerCase() !== "true") {
         throw new Error(result.message || "Message submission failed.");
       }
 
       // SUCCESS MESSAGE
       formMessage.textContent = `Thank you ${name}! Your message has been sent successfully. I will get back to you soon.`;
 
-      formMessage.classList.add("success");
+      formMessage.className = "form-message success";
 
       // Clear form after successful submission
       contactForm.reset();
@@ -135,14 +148,14 @@ if (contactForm) {
       formMessage.textContent =
         "Sorry! Your message could not be sent. Please check your internet connection and try again.";
 
-      formMessage.classList.add("error");
+      formMessage.className = "form-message error";
 
       console.error("Contact form error:", error);
     } finally {
-      // Restore button
+      // Re-enable button
       submitBtn.disabled = false;
 
-      // Restore original button after submission
+      // Restore original button after 2 seconds
       setTimeout(() => {
         submitBtn.innerHTML = originalButtonContent;
       }, 2000);
