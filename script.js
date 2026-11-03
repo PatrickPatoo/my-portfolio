@@ -162,3 +162,71 @@ if (contactForm) {
     }
   });
 }
+
+/* ============================================
+   REAL-TIME AVAILABILITY SYSTEM
+   Timezone: Africa/Nairobi (EAT)
+   Online: 08:00 AM - 10:00 PM
+============================================ */
+
+function updateAvailabilityStatus() {
+  const dot = document.getElementById("availabilityDot");
+  const status = document.getElementById("availabilityText");
+  const timeDisplay = document.getElementById("availabilityTime");
+
+  if (!dot || !status || !timeDisplay) return;
+
+  const now = new Date();
+
+  // Get current Kenyan time
+  const kenyaTime = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Nairobi",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  }).format(now);
+
+  // Get Kenyan hour and minute
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Africa/Nairobi",
+    hour: "2-digit",
+    minute: "2-digit",
+    hourCycle: "h23",
+  }).formatToParts(now);
+
+  const hour = Number(parts.find((part) => part.type === "hour").value);
+
+  const minute = Number(parts.find((part) => part.type === "minute").value);
+
+  const currentTime = hour * 60 + minute;
+
+  // Working hours: 8:00 AM to 10:00 PM
+  const onlineStart = 8 * 60;
+  const onlineEnd = 22 * 60;
+
+  const isOnline = currentTime >= onlineStart && currentTime < onlineEnd;
+
+  // Update live clock every second
+  timeDisplay.textContent = `· ${kenyaTime} EAT`;
+
+  if (isOnline) {
+    // ONLINE STATUS
+    dot.classList.remove("offline");
+    dot.classList.add("online");
+
+    status.textContent = "ONLINE";
+  } else {
+    // OFFLINE STATUS
+    dot.classList.remove("online");
+    dot.classList.add("offline");
+
+    status.textContent = "OFFLINE NOW";
+  }
+}
+
+// Run immediately
+updateAvailabilityStatus();
+
+// Update every second
+setInterval(updateAvailabilityStatus, 1000);
